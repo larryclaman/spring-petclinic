@@ -41,6 +41,7 @@ jobs:
       run: mvn -B package --file pom.xml
 
     - run: |
+        pwd
         ls -l 
         ls -l target
 
