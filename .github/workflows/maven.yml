@@ -40,7 +40,8 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    - run: |
+    - name: show env
+      run: |
         pwd
         ls -l 
         ls -l target
@@ -52,4 +53,4 @@ jobs:
       with: 
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }} 
-        package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/target/*.war'
+        package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/target/*.jar'
