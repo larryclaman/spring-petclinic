@@ -10,6 +10,15 @@ on:
   pull_request:
     branches: [ main ]
 
+
+env:
+  AZURE_WEBAPP_NAME: lncpetclinic  # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: ${{ github.workspace }} # set this to the path to your web app project
+  JAVA_VERSION: '1.8'                # set this to the node version to use
+  AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}     # set GH repo secret with the publish profile of the web app
+
+
+
 jobs:
   build:
 
@@ -24,6 +33,15 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    - run: ls -l 
-      
+    - run: |
+        ls -l 
+        ls -l target
 
+
+      
+    - name: 'Deploy to Azure WebApp'
+      uses: azure/webapps-deploy@v2
+      with: 
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ env.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/target/*.war'
